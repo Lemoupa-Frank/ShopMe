@@ -1,0 +1,13 @@
+server:
+  address: localhost
+  port : 8141
+spring:
+  application:
+    name: ShopME
+  config:
+    import: 'optional:configserver:'
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ShopME
+    username: frank
+    password: frank2a4s56
+    driver-class-name: org.postgresql.Driver
