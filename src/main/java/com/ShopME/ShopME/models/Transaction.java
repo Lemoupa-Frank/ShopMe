@@ -1,4 +1,4 @@
-package models;
+package com.ShopME.ShopME.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,26 +14,23 @@ import java.sql.Date;
  */
 @Data
 @Entity
-@Table(name = "order_")
-public class Order implements Serializable {
+@Table(name = "transaction")
+public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "order_id", nullable = false)
-    private String orderId;
+    @Column(name = "transaction_id", nullable = false)
+    private String transactionId;
 
     @Column(name = "user_id")
     private String userId;
 
-    @Column(name = "product_id")
-    private String productId;
+    @Column(name = "order_id")
+    private String orderId;
 
-    @Column(name = "ordered")
-    private Long ordered;
-
-    @Column(name = "coupon_id")
-    private String couponId;
+    @Column(name = "status")
+    private String status;
 
     @Column(name = "date", nullable = false)
     private Date date;

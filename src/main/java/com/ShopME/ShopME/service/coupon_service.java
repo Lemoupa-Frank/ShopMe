@@ -1,7 +1,7 @@
-package service;
+package com.ShopME.ShopME.service;
 
-import Repositories.CouponRepository;
-import models.Coupon;
+import com.ShopME.ShopME.Repositories.CouponRepository;
+import com.ShopME.ShopME.models.Coupon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

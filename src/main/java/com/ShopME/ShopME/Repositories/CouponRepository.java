@@ -1,8 +1,6 @@
-package Repositories;
+package com.ShopME.ShopME.Repositories;
 
-import models.Coupon;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.ShopME.ShopME.models.Coupon;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

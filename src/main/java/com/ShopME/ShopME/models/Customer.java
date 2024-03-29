@@ -1,4 +1,4 @@
-package models;
+package com.ShopME.ShopME.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

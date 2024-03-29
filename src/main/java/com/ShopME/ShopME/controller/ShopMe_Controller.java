@@ -1,9 +1,9 @@
-package com.ShopME.ShopME;
+package com.ShopME.ShopME.controller;
 import io.swagger.v3.oas.annotations.Operation;
-import models.Coupon;
+import com.ShopME.ShopME.models.Coupon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import service.coupon_service;
+import com.ShopME.ShopME.service.coupon_service;
 
 @RestController
 @RequestMapping("/ShopME")
@@ -40,7 +40,6 @@ public class ShopMe_Controller {
     @PostMapping("/addCoupons")
     public Coupon addCoupon(@RequestBody Coupon coupon)
     {
-        this.couponService.save_coupon(coupon);
-        return coupon;
+        return this.couponService.save_coupon(coupon);
     }
 }
