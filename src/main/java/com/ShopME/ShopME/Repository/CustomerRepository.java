@@ -1,10 +1,11 @@
-package com.ShopME.ShopME.Repositories;
+package com.ShopME.ShopME.Repository;
 
 import com.ShopME.ShopME.models.Customer;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
+
+@Hidden
 public interface CustomerRepository extends CrudRepository<Customer, String> {
 
 }
