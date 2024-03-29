@@ -8,6 +8,8 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * $table.getTableComment()
@@ -33,4 +35,40 @@ public class Coupon implements Serializable {
     @Column(name = "coupon_status")
     private String couponStatus;
 
+    public Coupon() {
+        this.couponId = generateUniqueCouponId();
+        this.couponType = generateRandomCouponType();
+        this.couponQuantity = generateRandomCouponQuantity();
+        this.couponStatus = "Accepted";
+    }
+
+    /**
+     * function generates random quantity of coupons between
+     * 2 and 10 inclusively as a long
+     * @return number of coupons
+     */
+    private long generateRandomCouponQuantity() {
+        Random random = new Random();
+        return random.nextInt(9) + 2; // Generates a random value between 2 and 10 (inclusive)
+    }
+
+    /**
+     * Randomly generates a coupon of types OFF5 or OFF10
+     * @return return a random coupon type
+     */
+    private String generateRandomCouponType() {
+        String[] types = {"OFF5", "OFF10"};
+        Random random = new Random();
+        int index = random.nextInt(types.length);
+        return types[index];
+    }
+
+    /**
+     * generate the coupon_id
+     * @return returns coupon id
+     */
+    private String generateUniqueCouponId() {
+        String uuid = UUID.randomUUID().toString();
+        return uuid.substring(0, Math.min(uuid.length(), 20));
+    }
 }
