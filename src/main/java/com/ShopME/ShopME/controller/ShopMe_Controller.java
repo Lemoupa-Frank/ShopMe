@@ -36,10 +36,11 @@ public class ShopMe_Controller {
         return 50;
     }
 
-    @Operation(summary = "Admin Level add coupon")
+    @Operation(summary = "Add coupon")
     @PostMapping("/addCoupons")
-    public Coupon addCoupon(@RequestBody Coupon coupon)
+    public Coupon addCoupon()
     {
+        Coupon coupon = new Coupon();
         return this.couponService.save_coupon(coupon);
     }
 }
