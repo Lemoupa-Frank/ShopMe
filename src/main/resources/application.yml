@@ -7,7 +7,15 @@ spring:
   config:
     import: 'optional:configserver:'
   datasource:
-    url: jdbc:postgresql://localhost:5432/ShopME
+    url: jdbc:postgresql://localhost:5432/shopme
     username: frank
     password: frank2a4s56
     driver-class-name: org.postgresql.Driver
+  servlet:
+    multipart:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
