@@ -5,18 +5,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.UUID;
 
 /**
  * $table.getTableComment()
  */
+
 @Data
 @Entity
 @Table(name = "order_")
+@NoArgsConstructor
 public class Order implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -29,13 +36,37 @@ public class Order implements Serializable {
     @Column(name = "product_id")
     private String productId;
 
-    @Column(name = "ordered")
-    private Long ordered;
+    @Column(name = "quantity")
+    private Long quantity;
 
     @Column(name = "coupon_id")
     private String couponId;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date")
     private Date date;
 
+    @Column(name = "amount")
+    private Long amount;
+
+
+
+    public Order(String userId, Long quantity,String couponId) {
+        this.orderId = generateUniqueCouponId();
+        this.userId = userId;
+        this.productId = "pd0021";
+        this.quantity = quantity;
+        this.couponId = couponId;
+        this.amount = 100*quantity;
+        LocalDate currentDate = LocalDate.now();
+        this.date = Date.valueOf(currentDate);
+    }
+
+    /**
+     * Generate order id
+     * @return order id
+     */
+    private String generateUniqueCouponId() {
+        String uuid = UUID.randomUUID().toString();
+        return uuid.substring(0, Math.min(uuid.length(), 20));
+    }
 }
