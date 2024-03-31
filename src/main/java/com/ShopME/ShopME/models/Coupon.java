@@ -26,20 +26,13 @@ public class Coupon implements Serializable {
     @Column(name = "coupon_id", nullable = false)
     private String couponId;
 
-    @Column(name = "coupon_type")
-    private String couponType;
-
     @Column(name = "coupon_quantity")
     private Long couponQuantity;
 
-    @Column(name = "coupon_status")
-    private String couponStatus;
 
     public Coupon() {
-        this.couponId = generateUniqueCouponId();
-        this.couponType = generateRandomCouponType();
+        this.couponId = generateRandomCouponType();
         this.couponQuantity = generateRandomCouponQuantity();
-        this.couponStatus = "Accepted";
     }
 
     /**
@@ -63,12 +56,4 @@ public class Coupon implements Serializable {
         return types[index];
     }
 
-    /**
-     * generate the coupon_id
-     * @return returns coupon id
-     */
-    private String generateUniqueCouponId() {
-        String uuid = UUID.randomUUID().toString();
-        return uuid.substring(0, Math.min(uuid.length(), 20));
-    }
 }
