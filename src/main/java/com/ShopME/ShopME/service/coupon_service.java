@@ -17,4 +17,7 @@ public class coupon_service {
     public Coupon save_coupon(Coupon coupon){
         return couponRepository.save(coupon);
     }
+    public Iterable<Coupon> getCoupons(){
+        return couponRepository.findAll();
+    }
 }
