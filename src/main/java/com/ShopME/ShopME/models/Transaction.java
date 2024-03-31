@@ -29,6 +29,12 @@ public class Transaction implements Serializable {
     @Column(name = "order_id")
     private String orderId;
 
+    @Column(name = "coupon_id")
+    private String couponId;
+
+    @Column(name = "amount")
+    private Long amount;
+
     @Column(name = "status")
     private String status;
 
