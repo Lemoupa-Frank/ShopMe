@@ -7,9 +7,9 @@ spring:
   config:
     import: 'optional:configserver:'
   datasource:
-    url: jdbc:postgresql://localhost:5432/shopme
-    username: frank
-    password: frank2a4s56
+    url: jdbc:postgresql://tuffi.db.elephantsql.com:5432/ijlawxyk
+    username: ijlawxyk
+    password: DsXt2xlqeC6O-VS6HeLfapKcv60maAfj
     driver-class-name: org.postgresql.Driver
   servlet:
     multipart:
