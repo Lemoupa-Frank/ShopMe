@@ -18,4 +18,7 @@ public class customer_service {
     {
         return customerRepository.save(customer);
     }
+    public boolean Customer_Is_Real(String id){
+        return customerRepository.existsById(id);
+    }
 }
