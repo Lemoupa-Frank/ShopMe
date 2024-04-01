@@ -29,7 +29,13 @@ public class Coupon implements Serializable {
     @Column(name = "coupon_quantity")
     private Long couponQuantity;
 
-
+    /**
+     * Coupon contructor
+     * Randomly generates a coupon of types OFF5 or OFF10
+     * the probability for OFF5 is 3/5 and that of OFF10
+     * is 2/5 the random function is a class member
+     * @return return a random coupon type
+     */
     public Coupon() {
         this.couponId = generateRandomCouponType();
         this.couponQuantity = generateRandomCouponQuantity();
@@ -47,10 +53,12 @@ public class Coupon implements Serializable {
 
     /**
      * Randomly generates a coupon of types OFF5 or OFF10
+     * the probability for OFF5 is 3/5 and that of OFF10
+     * is 2/5
      * @return return a random coupon type
      */
     private String generateRandomCouponType() {
-        String[] types = {"OFF5", "OFF10"};
+        String[] types = {"OFF5", "OFF10","OFF5","OFF5","OFF10"};
         Random random = new Random();
         int index = random.nextInt(types.length);
         return types[index];
