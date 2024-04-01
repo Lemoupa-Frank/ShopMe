@@ -19,4 +19,11 @@ public class Order_Message {
     
     public Order_Message(){}
 
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

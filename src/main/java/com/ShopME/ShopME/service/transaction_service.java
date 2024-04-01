@@ -21,4 +21,8 @@ public class transaction_service {
     {
         return transactionRepository.findByUserIdAndOrderId(UserId,OrderId);
     }
+
+    public boolean exist(String UserId, String OrderId){
+        return transactionRepository.existsByUserIdAndOrderId(UserId,OrderId);
+    }
 }

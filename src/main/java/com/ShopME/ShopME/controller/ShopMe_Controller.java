@@ -120,9 +120,9 @@ public class ShopMe_Controller {
 
     @Operation(summary = "Check My orders")
     @GetMapping("/{userId}/orders/{orderId}")
-    public ResponseEntity<Object> check_an_orders(@Parameter(description = "Customer Email") @RequestParam("customer ID") String user_id, @Parameter(description = "Order identifier") @RequestParam("Order ID") String order_id) {
+    public ResponseEntity<Object> check_an_orders(@Parameter(description = "Customer Email") @PathVariable("userId") String user_id, @Parameter(description = "Order identifier") @PathVariable("orderId") String order_id) {
         Iterable<Transaction> transactions_list = transactionService.getTransaction(user_id, order_id);
-        if (!transactions_list.iterator().hasNext()) {
+        if (!transactionService.exist(user_id,order_id)) {
             Order_Message orderMessage = new Order_Message(order_id, "Order not found");
             return ResponseEntity.status(404).body(orderMessage);
         }
@@ -198,7 +198,7 @@ public class ShopMe_Controller {
         //check if userid and orderid exist
     }
 
-    /**
+    /**"
      * generates a random response entity
      *from a transaction Id
      * @param transactionid transaction id of payment

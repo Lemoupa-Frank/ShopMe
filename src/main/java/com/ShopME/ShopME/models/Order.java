@@ -20,7 +20,6 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "order_")
-@NoArgsConstructor
 public class Order implements Serializable {
 
     @Serial

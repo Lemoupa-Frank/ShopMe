@@ -8,6 +8,7 @@ import java.util.List;
 
 @Hidden
 public interface TransactionRepository extends CrudRepository<Transaction, String> {
+    boolean existsByUserIdAndOrderId(String userId, String orderId);
     List<Transaction> findByUserIdAndOrderId(String userId, String orderId);
 
 }
