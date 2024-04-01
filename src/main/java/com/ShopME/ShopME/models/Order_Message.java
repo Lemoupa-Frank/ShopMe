@@ -1,8 +1,8 @@
 package com.ShopME.ShopME.models;
 
 public class Order_Message {
-    private final String orderId;
-    private final String description;
+    private  String orderId;
+    private  String description;
 
     public Order_Message(String orderId, String description) {
         this.orderId = orderId;
@@ -16,4 +16,7 @@ public class Order_Message {
     public String getDescription() {
         return description;
     }
+    
+    public Order_Message(){}
+
 }

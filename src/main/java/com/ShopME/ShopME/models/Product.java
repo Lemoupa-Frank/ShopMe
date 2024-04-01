@@ -31,4 +31,35 @@ public class Product implements Serializable {
     @Column(name = "available")
     private Long available;
 
+    public void setProuductId(String prouductId) {
+        this.prouductId = prouductId;
+    }
+
+    public void setOrdered(Long ordered) {
+        this.ordered = ordered;
+    }
+
+    public void setAvailable(Long available) {
+        this.available = available;
+    }
+
+    public Long getOrdered() {
+        return ordered;
+    }
+
+    public Long getAvailable() {
+        return available;
+    }
+
+    public String getProuductId() {
+        return prouductId;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
 }

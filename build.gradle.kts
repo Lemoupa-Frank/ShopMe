@@ -5,6 +5,7 @@ plugins {
 	id("io.swagger.core.v3.swagger-gradle-plugin") version "2.2.8"
 }
 
+
 group = "com.ShopME"
 version = "0.0.1-SNAPSHOT"
 

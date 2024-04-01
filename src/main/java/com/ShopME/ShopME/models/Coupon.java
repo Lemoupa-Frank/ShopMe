@@ -9,7 +9,6 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Random;
-import java.util.UUID;
 
 /**
  * $table.getTableComment()
@@ -64,4 +63,19 @@ public class Coupon implements Serializable {
         return types[index];
     }
 
+    public String getCouponId() {
+        return couponId;
+    }
+
+    public Long getCouponQuantity() {
+        return couponQuantity;
+    }
+
+    public void setCouponId(String couponId) {
+        this.couponId = couponId;
+    }
+
+    public void setCouponQuantity(Long couponQuantity) {
+        this.couponQuantity = couponQuantity;
+    }
 }

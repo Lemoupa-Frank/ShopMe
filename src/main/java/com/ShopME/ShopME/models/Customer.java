@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @Table(name = "customer")
 public class Customer implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -34,4 +36,43 @@ public class Customer implements Serializable {
     @Column(name = "coupon_status")
     private String coupon_status;
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getCouponId() {
+        return couponId;
+    }
+
+    public String getCoupon_status() {
+        return coupon_status;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setCouponId(String couponId) {
+        this.couponId = couponId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setCoupon_status(String coupon_status) {
+        this.coupon_status = coupon_status;
+    }
 }

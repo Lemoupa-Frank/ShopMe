@@ -199,8 +199,8 @@ public class ShopMe_Controller {
     }
 
     /**
-     * generates a response entity after being a transactionid
-     *
+     * generates a random response entity
+     *from a transaction Id
      * @param transactionid transaction id of payment
      * @return returns payment object
      */

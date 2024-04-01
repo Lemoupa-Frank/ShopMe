@@ -60,6 +60,64 @@ public class Order implements Serializable {
         LocalDate currentDate = LocalDate.now();
         this.date = Date.valueOf(currentDate);
     }
+    
+    public Order(){}
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public String getCouponId() {
+        return couponId;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setCouponId(String couponId) {
+        this.couponId = couponId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     /**
      * Generate order id

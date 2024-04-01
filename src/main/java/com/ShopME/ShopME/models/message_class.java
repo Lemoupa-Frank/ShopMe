@@ -16,4 +16,8 @@ public class message_class {
     public String getDescription() {
         return description;
     }
+
+    public String getMessage() {
+        return message;
+    }
 }
