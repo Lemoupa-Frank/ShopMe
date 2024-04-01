@@ -41,4 +41,16 @@ public class Transaction implements Serializable {
     @Column(name = "date", nullable = false)
     private Date date;
 
+    public Transaction(String transactionId, String userId, String orderId, String couponId, Long amount, String status, Date date) {
+        this.transactionId = transactionId;
+        this.userId = userId;
+        this.orderId = orderId;
+        this.couponId = couponId;
+        this.amount = amount;
+        this.status = status;
+        this.date = date;
+    }
+
+    public Transaction() {
+    }
 }
