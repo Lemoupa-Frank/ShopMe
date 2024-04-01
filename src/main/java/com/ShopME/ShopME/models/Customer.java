@@ -31,4 +31,7 @@ public class Customer implements Serializable {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "coupon_status")
+    private String coupon_status;
+
 }
