@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -47,6 +46,7 @@ public class ShopMe_Controller {
     @Operation(summary = "Check the Shop inventory")
     @GetMapping("/inventory")
     public Product inventory() {
+        // Setting up an iterator in case more products are added
         Iterable<Product> products = productService.get_product();
         Iterator<Product> iterator = products.iterator();
         if (iterator.hasNext()) {
@@ -68,9 +68,38 @@ public class ShopMe_Controller {
 
     @Operation(summary = "Add coupon")
     @PostMapping("/addCoupons")
-    public Coupon addCoupon() {//modify to save just one of each
+    public Coupon addCoupon() {
         Coupon coupon = new Coupon();
         return this.couponService.save_coupon(coupon);
+    }
+
+    @Operation(summary = "view all customers")
+    @GetMapping("/customer list")
+    public Iterable<Customer> list_of_customers() {
+        return this.customerService.list_of_users();
+    }
+
+    @Operation(summary = "User applies for a coupon if success coupon count drops by one")
+    @PostMapping("/apply for coupon")
+    public ResponseEntity<Object> request_coupon(@Parameter(description = "Customer email") @RequestParam("customer ID") String user_id) {
+        List<String> transactions = Arrays.asList("Coupon", "Coupon", "NONE", "NONE", "NONE", "NONE");
+        int randomIndex = new Random().nextInt(transactions.size());
+        String rand_coupon = transactions.get(randomIndex);
+        if (customerService.getCustomer(user_id).isEmpty()) {
+            return ResponseEntity.status(200).body(new message_class("Bad User", "User not found or is blocked"));
+        }
+        if (!rand_coupon.equals("NONE")) {
+            Coupon coupon = new Coupon();
+            if (couponService.get_Coupon(coupon.getCouponId()).isPresent() && couponService.get_Coupon(coupon.getCouponId()).get().getCouponQuantity() > 1) {
+                customerService.add_coupon(user_id, coupon.getCouponId());
+                couponService.update_coupon_number(coupon.getCouponId(),  (couponService.get_Coupon(coupon.getCouponId()).get().getCouponQuantity() - 1));
+                return ResponseEntity.status(200).body(new message_class("Coupon found", coupon.getCouponId()));
+            } else {
+                return ResponseEntity.status(200).body(new message_class("Coupon of that types are finished", "contact service to add"));
+            }
+        } else {
+            return ResponseEntity.status(200).body(new message_class("Try again you were not lucky", "No coupons available"));
+        }
     }
 
     @Operation(summary = "Create new Customer")
@@ -91,7 +120,7 @@ public class ShopMe_Controller {
 
     @Operation(summary = "Check My orders")
     @GetMapping("/{userId}/orders/{orderId}")
-    public ResponseEntity<Object> check_an_orders(@Parameter(description = "Customer identifier") @RequestParam("customer ID") String user_id, @Parameter(description = "Order identifier") @RequestParam("Order ID") String order_id) {
+    public ResponseEntity<Object> check_an_orders(@Parameter(description = "Customer Email") @RequestParam("customer ID") String user_id, @Parameter(description = "Order identifier") @RequestParam("Order ID") String order_id) {
         Iterable<Transaction> transactions_list = transactionService.getTransaction(user_id, order_id);
         if (!transactions_list.iterator().hasNext()) {
             Order_Message orderMessage = new Order_Message(order_id, "Order not found");
@@ -103,22 +132,36 @@ public class ShopMe_Controller {
 
     @Operation(summary = "order a product ")
     @PostMapping("/{userId}/order")
-    public Order createOrder(@PathVariable("userId") String userId,
-                             @RequestParam("quantity") Long quantity,
-                             @RequestParam(value = "coupon", required = false) String couponCode) {
-        //verify if user exist or make session assumption
-        //verify if coupon is valid if not reject
-        //once a user uses coupon make coupon go and flag a new attribute maybe
-        // subtract quantity from existing products
+    public ResponseEntity<Object> createOrder(@Parameter(description = "Customer Email") @PathVariable("userId") String userId,
+                                              @RequestParam("quantity to order") Long quantity,
+                                              @RequestParam(value = "discount coupon", required = false) String couponCode) {
         Order order = new Order(userId, quantity, couponCode);
-        if (order.getCouponId() != null) {
+        if (customerService.getCustomer(userId).isEmpty()) {
+            return ResponseEntity.status(200).body(new Order_Message(order.getOrderId(), "Invalid Customer"));
+        }
+        if (productService.get_a_product().isPresent()) {
+            Product product = productService.get_a_product().get();
+            if (product.getAvailable() > quantity && quantity > 0) {
+                productService.update_product(product.getOrdered() + quantity, product.getAvailable() - quantity);
+            } else {
+                return ResponseEntity.status(404).body(new Order_Message(order.getOrderId(), "Invalid quantity"));
+            }
+        } else {
+            return ResponseEntity.status(404).body(new Order_Message(order.getOrderId(), "No products available"));
+        }
+        if ((order.getCouponId() != null && !order.getCouponId().equals(customerService.getCustomer(userId).get().getCouponId())) || customerService.getCustomer(userId).get().getCoupon_status().equals("Used")) {
+
+            return ResponseEntity.status(404).body(new Order_Message(order.getOrderId(), "Invalid Coupon"));
+        } else if (order.getCouponId() != null) {
             if (order.getCouponId().equals("OFF5")) {
                 order.setAmount((long) (order.getAmount() - order.getAmount() * 0.05));
+                customerService.update_coupon_to_used(userId);
             } else if (order.getCouponId().equals("OFF10")) {
                 order.setAmount((long) (order.getAmount() - order.getAmount() * 0.10));
+                customerService.update_coupon_to_used(userId);
             }
         }
-        return orderService.save_order(order);
+        return ResponseEntity.status(200).body(orderService.save_order(order));
     }
 
     @Operation(summary = "Make a payment")
@@ -136,27 +179,17 @@ public class ShopMe_Controller {
         }
         responsePayload.setOrderId(orderId);
         responsePayload.setUserId(userId);
-        Transaction pay_transaction = new Transaction();
         Order order = orderService.get_order(orderId);
-        if (statuscode == 200 && order != null) {
-
-            pay_transaction.setOrderId(orderId);
-            pay_transaction.setUserId(userId);
-            pay_transaction.setTransactionId(transaction);
-            pay_transaction.setDate(Date.valueOf(LocalDate.now()));
-            pay_transaction.setStatus("successful");
-            pay_transaction.setAmount(order.getAmount());
-            pay_transaction.setCouponId(order.getCouponId());
+        if(order == null)
+        {
+            return ResponseEntity.status(513).body(new message_class("oreder not found", "Order does not exist"));
+        }
+        Transaction pay_transaction = new Transaction(transaction, userId, orderId, order.getCouponId(), order.getAmount(), "successful", Date.valueOf(LocalDate.now()));
+        if (statuscode == 200) {
             transactionService.addtransaction(pay_transaction);
         }
-        if (statuscode != 200 && order != null) {
-            pay_transaction.setOrderId(orderId);
-            pay_transaction.setUserId(userId);
-            pay_transaction.setTransactionId(transaction);
-            pay_transaction.setDate(Date.valueOf(LocalDate.now()));
+        if (statuscode != 200) {
             pay_transaction.setStatus("failed");
-            pay_transaction.setAmount(order.getAmount());
-            pay_transaction.setCouponId(order.getCouponId());
             transactionService.addtransaction(pay_transaction);
         }
 
